@@ -1,0 +1,40 @@
+.status-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 0;
+  background: var(--warp-grey);
+}
+
+.status-indicator--confirmed .status-dot {
+  background: #00FF00;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.status-indicator--pending .status-dot {
+  background: var(--warp-yellow);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.status-indicator--failed .status-dot {
+  background: var(--warp-red);
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}

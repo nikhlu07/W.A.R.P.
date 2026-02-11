@@ -1,0 +1,207 @@
+@import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 2%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 2%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 2%;
+    --primary: 72 100% 50%;
+    --primary-foreground: 0 0% 2%;
+    --secondary: 0 0% 90%;
+    --secondary-foreground: 0 0% 2%;
+    --muted: 0 0% 90%;
+    --muted-foreground: 0 0% 40%;
+    --accent: 72 100% 50%;
+    --accent-foreground: 0 0% 2%;
+    --destructive: 10 100% 50%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 2%;
+    --input: 0 0% 2%;
+    --ring: 72 100% 50%;
+    --radius: 0px;
+
+    --warp-yellow: 72 100% 50%;
+    --warp-black: 0 0% 2%;
+    --warp-grey: 0 0% 90%;
+    --warp-red: 10 100% 50%;
+    --warp-white: 0 0% 100%;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 0 0% 2%;
+    --sidebar-primary: 72 100% 50%;
+    --sidebar-primary-foreground: 0 0% 2%;
+    --sidebar-accent: 0 0% 90%;
+    --sidebar-accent-foreground: 0 0% 2%;
+    --sidebar-border: 0 0% 2%;
+    --sidebar-ring: 72 100% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+    border-radius: 0 !important;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: theme('colors.warp.white');
+    color: theme('colors.warp.black');
+    font-family: 'JetBrains Mono', monospace;
+    background-image: radial-gradient(theme('colors.warp.grey') 1px, transparent 1px);
+    background-size: 24px 24px;
+    overflow-x: hidden;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  .font-display {
+    font-family: 'Unbounded', sans-serif;
+    letter-spacing: -0.05em;
+  }
+}
+
+@layer components {
+
+  /* The Aggressive Button (Primary) */
+  .btn-warp {
+    @apply bg-warp-yellow text-warp-black border-2 border-warp-black font-extrabold uppercase relative cursor-pointer transition-all duration-100;
+    box-shadow: 6px 6px 0px theme('colors.warp.black');
+  }
+
+  .btn-warp:hover {
+    transform: translate(-1px, -1px);
+    box-shadow: 7px 7px 0px theme('colors.warp.black');
+  }
+
+  .btn-warp:active {
+    transform: translate(6px, 6px);
+    box-shadow: 0px 0px 0px theme('colors.warp.black');
+  }
+
+  /* Secondary Button (Ghost) */
+  .btn-warp-ghost {
+    @apply bg-transparent text-warp-black border border-warp-black font-bold uppercase cursor-pointer transition-all duration-200;
+  }
+
+  .btn-warp-ghost:hover {
+    @apply bg-warp-black text-warp-yellow;
+  }
+
+  /* The Clipped Card (Data Plate) */
+  .card-warp {
+    @apply bg-white border border-warp-black relative;
+    clip-path: polygon(0 0,
+        100% 0,
+        100% calc(100% - 30px),
+        calc(100% - 30px) 100%,
+        0 100%);
+  }
+
+  /* Decorative Barcodes */
+  .barcode {
+    display: flex;
+    gap: 2px;
+    height: 100%;
+    align-items: center;
+  }
+
+  .bar {
+    @apply bg-warp-black h-full;
+  }
+
+  /* Ticker Animation */
+  .ticker-wrap {
+    @apply w-full overflow-hidden bg-warp-black text-warp-yellow border-b-2 border-warp-black whitespace-nowrap py-2;
+  }
+
+  .ticker {
+    display: inline-block;
+    animation: marquee 20s linear infinite;
+  }
+
+  @keyframes marquee {
+    0% {
+      transform: translateX(0);
+    }
+
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  /* Glitch Effect Class */
+  .glitch-text:hover {
+    animation: glitch 0.3s cubic-bezier(.25, .46, .45, .94) both infinite;
+  }
+
+  @keyframes glitch {
+    0% {
+      transform: translate(0);
+    }
+
+    20% {
+      transform: translate(-2px, 2px);
+    }
+
+    40% {
+      transform: translate(-2px, -2px);
+    }
+
+    60% {
+      transform: translate(2px, 2px);
+    }
+
+    80% {
+      transform: translate(2px, -2px);
+    }
+
+    100% {
+      transform: translate(0);
+    }
+  }
+
+  /* Input Field Focus Logic */
+  .input-warp:focus-within {
+    @apply bg-warp-yellow border-warp-black;
+  }
+
+  .input-warp input {
+    @apply bg-transparent outline-none;
+  }
+
+  .input-warp:focus-within input {
+    @apply font-bold;
+  }
+
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar {
+    width: 12px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-warp-white border-l-2 border-warp-black;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-warp-black border-2 border-warp-white;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-warp-yellow;
+  }
+}

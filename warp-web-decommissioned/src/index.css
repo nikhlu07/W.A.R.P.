@@ -1,0 +1,194 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Unbounded:wght@800&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --warp-white: #FFFFFF;
+  --warp-black: #050505;
+  --warp-yellow: #D9FF00;
+  --warp-grey: #E5E5E5;
+  --warp-red: #FF2A00;
+}
+
+body {
+  background-color: var(--warp-white);
+  color: var(--warp-black);
+  font-family: 'JetBrains Mono', monospace;
+  /* The Technical Grid: 1px dots */
+  background-image: radial-gradient(var(--warp-grey) 1px, transparent 1px);
+  background-size: 24px 24px;
+  overflow-x: hidden;
+}
+
+/* Typography Override */
+h1,
+h2,
+h3,
+.font-display {
+  font-family: 'Unbounded', sans-serif;
+  letter-spacing: -0.05em;
+}
+
+/* The Aggressive Button (Primary) */
+.btn-warp {
+  background: var(--warp-yellow);
+  color: var(--warp-black);
+  border: 2px solid var(--warp-black);
+  box-shadow: 6px 6px 0px var(--warp-black);
+  /* Hard Shadow */
+  font-weight: 800;
+  text-transform: uppercase;
+  transition: all 0.1s cubic-bezier(0, 0, 0.2, 1);
+  cursor: pointer;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-warp:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 7px 7px 0px var(--warp-black);
+}
+
+.btn-warp:active {
+  transform: translate(6px, 6px);
+  box-shadow: 0px 0px 0px var(--warp-black);
+}
+
+/* Secondary Button (Ghost) */
+.btn-warp-ghost {
+  background: transparent;
+  color: var(--warp-black);
+  border: 1px solid var(--warp-black);
+  font-weight: 700;
+  text-transform: uppercase;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-warp-ghost:hover {
+  background: var(--warp-black);
+  color: var(--warp-yellow);
+}
+
+/* The Clipped Card (Data Plate) */
+.card-warp {
+  background: white;
+  border: 1px solid var(--warp-black);
+  /* The 45-degree cut on bottom right */
+  clip-path: polygon(0 0,
+      100% 0,
+      100% calc(100% - 30px),
+      calc(100% - 30px) 100%,
+      0 100%);
+  position: relative;
+}
+
+/* Decorative Barcodes */
+.barcode {
+  display: flex;
+  gap: 2px;
+  height: 100%;
+  align-items: center;
+}
+
+.bar {
+  background: var(--warp-black);
+  height: 100%;
+}
+
+/* Ticker Animation */
+.ticker-wrap {
+  width: 100%;
+  overflow: hidden;
+  background: var(--warp-black);
+  color: var(--warp-yellow);
+  border-bottom: 2px solid var(--warp-black);
+  white-space: nowrap;
+  padding: 8px 0;
+}
+
+.ticker {
+  display: inline-block;
+  animation: marquee 20s linear infinite;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Glitch Effect Class */
+.glitch-text:hover {
+  animation: glitch 0.3s cubic-bezier(.25, .46, .45, .94) both infinite;
+}
+
+@keyframes glitch {
+  0% {
+    transform: translate(0);
+  }
+
+  20% {
+    transform: translate(-2px, 2px);
+  }
+
+  40% {
+    transform: translate(-2px, -2px);
+  }
+
+  60% {
+    transform: translate(2px, 2px);
+  }
+
+  80% {
+    transform: translate(2px, -2px);
+  }
+
+  100% {
+    transform: translate(0);
+  }
+}
+
+/* Input Field Focus Logic */
+.input-warp:focus-within {
+  background-color: var(--warp-yellow);
+  border-color: var(--warp-black);
+}
+
+.input-warp input {
+  background: transparent;
+  outline: none;
+}
+
+.input-warp:focus-within input {
+  font-weight: 700;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--warp-white);
+  border-left: 2px solid var(--warp-black);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--warp-black);
+  border: 2px solid var(--warp-white);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--warp-yellow);
+}

@@ -1,0 +1,19 @@
+.section-divider {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 48px 0;
+}
+
+.barcode {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 40px;
+}
+
+.bar {
+  background: var(--warp-black);
+  height: 100%;
+  opacity: 0.3;
+}
