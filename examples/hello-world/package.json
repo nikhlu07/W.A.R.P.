@@ -8,8 +8,9 @@
         "start:client": "tsx client.ts"
     },
     "dependencies": {
+        "@supabase/supabase-js": "^2.95.3",
+        "dotenv": "^16.6.1",
         "express": "^4.18.2",
-        "dotenv": "^16.4.5",
         "x402-stacks": "^2.0.1"
     },
     "devDependencies": {
