@@ -23,7 +23,9 @@ async function main() {
     try {
         console.log("🤖 Agent attempting to fetch premium data...");
         // initial request -> 402 -> sign tx -> retry with payment headers -> 200
-        const data = await agent.fetch('http://localhost:3000/secret-data');
+        const serverUrl = process.env.SERVER_URL || 'https://w-a-r-p-1.onrender.com';
+        console.log(`📡 Connecting to: ${serverUrl}`);
+        const data = await agent.fetch(`${serverUrl}/secret-data`);
 
         console.log("✅ Payment successful! Data received:");
         console.log(data);
