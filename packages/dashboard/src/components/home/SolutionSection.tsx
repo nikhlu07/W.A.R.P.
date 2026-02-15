@@ -13,7 +13,7 @@ const solutions = [
   {
     icon: Bot,
     title: "FOR AGENTS",
-    description: "Autonomous payment handling. Your agent detects 402, pays the invoice, and retries — all without human intervention.",
+    description: "Autonomous payment handling. Your agent detects x402 headers, pays via Stacks, and retries — all without human intervention.",
     tag: "PAY",
   },
   {

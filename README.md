@@ -6,7 +6,7 @@
 
 <img src="./logo.svg" alt="W.A.R.P. Logo" width="100">
 
-> **The first HTTP 402 implementation that actually works.**  
+> **The first production-ready x402 Stacks protocol implementation.**  
 > Speed-of-light settlement for the Agent Economy. Built on Stacks. Secured by Bitcoin.
 
 </div>
@@ -91,21 +91,21 @@ This unity ensures that every feature added to the Protocol is immediately suppo
 
 ---
 
-## 🚀 The Solution: HTTP 402 + Stacks Blockchain
+## 🚀 The Solution: x402 Stacks Protocol Implementation
 
-W.A.R.P. is a production-ready implementation of the **x402 Protocol** on Stacks. It weaponizes the forgotten HTTP status code `402 Payment Required` to transform it into a **negotiation protocol** between APIs and AI Agents.
+W.A.R.P. is the **first complete implementation of the x402 Stacks protocol specification**. It weaponizes the forgotten HTTP status code `402 Payment Required` to transform it into a **standardized negotiation protocol** between APIs and AI Agents, as defined in the official x402 Stacks spec.
 
 ### **For API Sellers:**
 
-Drop in 3 lines of middleware. Start earning **STX**, **sBTC**, or **USDCx** from Agent traffic immediately.
+Drop in 3 lines of x402-compliant middleware. Start earning **STX**, **sBTC**, or **USDCx** from Agent traffic immediately.
 
 ### **For Agent Buyers:**
 
-A standardized SDK that detects **x402-compliant invoices**, signs transactions, and retries requests—fully autonomous.
+A standardized SDK implementing the x402 Stacks client spec that detects **x402-compliant invoices**, signs Stacks transactions, and retries requests—fully autonomous.
 
 ### **For The Stacks Ecosystem:**
 
-Creates **immediate utility** for Stacks-native assets as the fuel for the AI economy.
+Creates **immediate utility** for Stacks-native assets as the fuel for the AI economy. W.A.R.P. proves the x402 protocol works at scale.
 
 ---
 
@@ -351,7 +351,7 @@ Unlike Ethereum (slow, expensive) or Solana (no Bitcoin finality), Stacks offers
 2. **Security:** Bitcoin finality (no rug pulls, no 51% attacks)
 3. **Cost:** Micro-transactions are economically viable (~$0.001 per tx)
 
-**W.A.R.P. is the first "killer app" for HTTP 402 + Blockchain.**
+**W.A.R.P. is the first "killer app" for the x402 Stacks protocol.**
 
 ---
 
@@ -359,15 +359,15 @@ Unlike Ethereum (slow, expensive) or Solana (no Bitcoin finality), Stacks offers
 
 ### **Challenge Goals Met:**
 
-✅ **Implements HTTP 402:** First working implementation using Stacks  
-✅ **Uses Stacks Blockchain:** All payments settle on-chain  
+✅ **Implements x402 Stacks Protocol:** First complete implementation of x402 spec  
+✅ **Uses Stacks Blockchain:** All payments settle on-chain per x402 standard  
 ✅ **Real-World Utility:** Solves actual pain point (API monetization)  
 ✅ **Open Source:** MIT Licensed, fully extensible  
 ✅ **Developer-Friendly:** 3 lines of code to integrate  
 
 ### **Innovation:**
 
-- **First autonomous Agent-to-API payment protocol**
+- **First complete implementation of x402 Stacks protocol**
 - **Dynamic pricing engine** (surge pricing for APIs)
 - **Agent-agnostic SDK** (works with any AI framework)
 

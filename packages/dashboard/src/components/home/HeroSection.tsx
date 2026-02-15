@@ -24,8 +24,8 @@ const HeroSection = () => {
             </span>
           </h1>
           <p className="font-mono text-lg mb-10 max-w-md leading-relaxed">
-            A sterile, high-frequency settlement layer for the open web.
-            Zero curves. Zero latency. Pure acceleration.
+            The first production-ready implementation of the x402 Stacks protocol.
+            HTTP 402 payments. Zero latency. Pure acceleration.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-6">
@@ -60,7 +60,7 @@ const HeroSection = () => {
               <div className="flex justify-between items-start mb-8">
                 <div>
                   <h3 className="font-display text-2xl font-bold uppercase">Payment<br />Required</h3>
-                  <div className="font-mono text-xs mt-1 text-gray-500">ERROR 402 // PROTOCOL LEVEL</div>
+                  <div className="font-mono text-xs mt-1 text-gray-500">ERROR 402 // x402 STACKS PROTOCOL</div>
                 </div>
                 <Lock className="w-8 h-8" strokeWidth={1.5} />
               </div>
