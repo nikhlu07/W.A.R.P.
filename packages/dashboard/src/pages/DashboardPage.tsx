@@ -1,27 +1,76 @@
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import WarpBadge from "@/components/shared/WarpBadge";
 import WarpCard from "@/components/shared/WarpCard";
-import { revenueData, transactions } from "@/data/mockData";
+import { revenueData } from "@/data/mockData"; // Keep revenue data mock for now as it needs aggregation
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 import { TrendingUp, Zap, Users, ExternalLink } from "lucide-react";
-
-const stats = [
-  { label: "TOTAL REVENUE", value: "342.1 STX", icon: TrendingUp, change: "+18.2%" },
-  { label: "PAYMENTS TODAY", value: "127", icon: Zap, change: "+34" },
-  { label: "UNIQUE AGENTS", value: "48", icon: Users, change: "+5" },
-];
-
-const topAgents = [
-  { name: "TradingAI", total: 89.3 },
-  { name: "GPT-4-Agent", total: 67.1 },
-  { name: "ResearchAI", total: 45.8 },
-  { name: "DataBot-v3", total: 38.2 },
-  { name: "PriceOracle", total: 29.7 },
-];
+import { supabase } from "@/lib/supabase";
+import { formatDistanceToNow } from "date-fns";
 
 const DashboardPage = () => {
+  const [realTransactions, setRealTransactions] = useState<any[]>([]);
+  const [stats, setStats] = useState([
+    { label: "TOTAL REVENUE", value: "0 STX", icon: TrendingUp, change: "+0%" },
+    { label: "PAYMENTS TODAY", value: "0", icon: Zap, change: "+0" },
+    { label: "UNIQUE AGENTS", value: "0", icon: Users, change: "+0" },
+  ]);
+
+  useEffect(() => {
+    fetchTransactions();
+    // Subscribe to new inserts
+    const channel = supabase
+      .channel('realtime:transactions')
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'transactions' }, (payload) => {
+        setRealTransactions(prev => [payload.new, ...prev]);
+        updateStats([payload.new, ...realTransactions]);
+      })
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, []);
+
+  const fetchTransactions = async () => {
+    const { data, error } = await supabase
+      .from('transactions')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .limit(50);
+
+    if (error) {
+      console.error("Error fetching transactions:", error);
+    } else if (data) {
+      setRealTransactions(data);
+      updateStats(data);
+    }
+  };
+
+  const updateStats = (txs: any[]) => {
+    // Basic aggregation
+    const totalRev = txs.reduce((acc, tx) => acc + (parseFloat(tx.amount) || 0), 0);
+    const today = new Date();
+    const todayTxs = txs.filter(tx => new Date(tx.created_at).toDateString() === today.toDateString());
+    const uniqueAgents = new Set(txs.map(tx => tx.sender)).size;
+
+    setStats([
+      { label: "TOTAL REVENUE", value: `${(totalRev / 1000000).toFixed(2)} STX`, icon: TrendingUp, change: "Live" },
+      { label: "PAYMENTS TODAY", value: todayTxs.length.toString(), icon: Zap, change: "Live" },
+      { label: "UNIQUE AGENTS", value: uniqueAgents.toString(), icon: Users, change: "Live" },
+    ]);
+  };
+
+  const topAgents = [
+    { name: "TradingAI", total: 89.3 },
+    { name: "GPT-4-Agent", total: 67.1 },
+    { name: "ResearchAI", total: 45.8 },
+    { name: "DataBot-v3", total: 38.2 },
+    { name: "PriceOracle", total: 29.7 },
+  ];
+
   return (
     <div className="min-h-screen">
       <Navbar />
@@ -29,7 +78,7 @@ const DashboardPage = () => {
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center gap-4 mb-8">
             <WarpBadge>DASHBOARD</WarpBadge>
-            <span className="font-mono text-xs text-muted-foreground">API Revenue Analytics — Mock Data</span>
+            <span className="font-mono text-xs text-muted-foreground">API Revenue Analytics — Live Data</span>
           </div>
 
           {/* Stats */}
@@ -51,7 +100,7 @@ const DashboardPage = () => {
                       <s.icon className="w-5 h-5 text-warp-black" />
                     </div>
                   </div>
-                  <div className="mt-2 font-mono text-xs text-[#00aa00] font-bold">{s.change} from yesterday</div>
+                  <div className="mt-2 font-mono text-xs text-[#00aa00] font-bold">{s.change}</div>
                 </WarpCard>
               </motion.div>
             ))}
@@ -60,7 +109,7 @@ const DashboardPage = () => {
           <div className="grid lg:grid-cols-3 gap-4 mb-8">
             {/* Chart */}
             <div className="lg:col-span-2">
-              <WarpCard cut={false} className="h-full">
+              <WarpCard className="h-full">
                 <div className="font-mono text-xs font-bold uppercase text-muted-foreground mb-4">
                   REVENUE OVER TIME (STX)
                 </div>
@@ -100,9 +149,9 @@ const DashboardPage = () => {
             </div>
 
             {/* Leaderboard */}
-            <WarpCard cut={false}>
+            <WarpCard>
               <div className="font-mono text-xs font-bold uppercase text-muted-foreground mb-4">
-                TOP AGENTS
+                TOP AGENTS (MOCK)
               </div>
               <div className="space-y-3">
                 {topAgents.map((a, i) => (
@@ -121,38 +170,41 @@ const DashboardPage = () => {
           </div>
 
           {/* Transactions */}
-          <WarpCard cut={false}>
+          <WarpCard>
             <div className="font-mono text-xs font-bold uppercase text-muted-foreground mb-4">
-              RECENT TRANSACTIONS
+              RECENT TRANSACTIONS (LIVE)
             </div>
             <div className="border border-warp-black overflow-x-auto">
               <div className="grid grid-cols-5 bg-warp-black text-warp-yellow font-mono text-[10px] font-bold uppercase min-w-[600px]">
                 <div className="px-4 py-2">TX ID</div>
-                <div className="px-4 py-2">AGENT</div>
+                <div className="px-4 py-2">SENDER</div>
                 <div className="px-4 py-2">AMOUNT</div>
                 <div className="px-4 py-2">TIME</div>
                 <div className="px-4 py-2">STATUS</div>
               </div>
-              {transactions.map((tx) => (
-                <div key={tx.txId} className="grid grid-cols-5 border-t border-warp-grey font-mono text-xs hover:bg-warp-yellow/10 transition-colors min-w-[600px]">
-                  <div className="px-4 py-2.5 flex items-center gap-1">
-                    <span className="text-foreground">{tx.txId}</span>
-                    <ExternalLink className="w-3 h-3 text-muted-foreground" />
-                  </div>
-                  <div className="px-4 py-2.5">{tx.agent}</div>
-                  <div className="px-4 py-2.5 font-bold">{tx.amount} STX</div>
-                  <div className="px-4 py-2.5 text-muted-foreground">{tx.time}</div>
-                  <div className="px-4 py-2.5">
-                    <span className={`inline-block px-2 py-0.5 text-[10px] font-bold uppercase border ${
-                      tx.status === "confirmed"
+              {realTransactions.length === 0 ? (
+                <div className="p-8 text-center font-mono text-sm text-gray-500">No transactions recorded yet.</div>
+              ) : (
+                realTransactions.map((tx) => (
+                  <div key={tx.tx_id} className="grid grid-cols-5 border-t border-warp-grey font-mono text-xs hover:bg-warp-yellow/10 transition-colors min-w-[600px]">
+                    <div className="px-4 py-2.5 flex items-center gap-1 overflow-hidden">
+                      <span className="text-foreground truncate block w-24" title={tx.tx_id}>{tx.tx_id.substring(0, 10)}...</span>
+                      <ExternalLink className="w-3 h-3 text-muted-foreground flex-shrink-0" />
+                    </div>
+                    <div className="px-4 py-2.5 truncate" title={tx.sender}>{tx.sender.substring(0, 10)}...</div>
+                    <div className="px-4 py-2.5 font-bold">{(tx.amount / 1000000).toFixed(6)} STX</div>
+                    <div className="px-4 py-2.5 text-muted-foreground">{formatDistanceToNow(new Date(tx.created_at), { addSuffix: true })}</div>
+                    <div className="px-4 py-2.5">
+                      <span className={`inline-block px-2 py-0.5 text-[10px] font-bold uppercase border ${tx.status === "confirmed"
                         ? "bg-warp-yellow text-warp-black border-warp-black"
                         : "bg-warp-grey text-muted-foreground border-warp-grey"
-                    }`}>
-                      {tx.status}
-                    </span>
+                        }`}>
+                        {tx.status}
+                      </span>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))
+              )}
             </div>
           </WarpCard>
         </div>
