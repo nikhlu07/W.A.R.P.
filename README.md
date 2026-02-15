@@ -59,6 +59,30 @@ We are moving from the **Attention Economy** (Ads) to the **Execution Economy** 
 
 **The core issue:** The web's payment infrastructure was built for humans with wallets, not autonomous agents with private keys.
 
+## ⚠️ The Strategic Trap: "Empty Platform Problem"
+
+If you only build the **W.A.R.P. Platform** (Dashboard/Explorer), you are reliant on other developers finding the raw `x402` standard, understanding it, and implementing it correctly.
+
+**Reality:** Developers are lazy. They won't read the raw spec. They will look for `npm install x402`.
+
+**The Fix:** Your SDK (`warp-protocol`) is the **"Trojan Horse."** Developers install it because it makes coding easier. In doing so, they automatically become compatible with your Platform.
+
+---
+
+## 🌀 The "W.A.R.P. Flywheel"
+
+This is the winning business model where **Both** the Engine and the Dashboard work together:
+
+1. **The Hook (SDK):** Developer installs `warp-protocol` because it saves them **50 hours** of coding crypto headers.
+2. **The Data (Protocol):** The SDK processes payments and (optionally) reports stats to your backend.
+3. **The Value (Platform):** The Developer logs into **warp.money** (your platform) to see: *"You earned 500 STX today."*
+
+---
+
+## 🏗️ The New Architecture: "The Hybrid Monorepo"
+
+We structure this repository to hold **Both** the Engine (SDK) and the Dashboard (Platform) to ensure tight integration and rapid iteration.
+
 ---
 
 ## 🚀 The Solution: HTTP 402 + Stacks Blockchain
@@ -268,7 +292,7 @@ main();
 
 **Output:**
 
-```
+```text
 🤖 Agent attempting to fetch premium data...
 ⚡ 402 detected: Price = 1 STX, Recipient = SP2J6...
 💳 Broadcasting payment transaction...
@@ -345,41 +369,34 @@ Unlike Ethereum (slow, expensive) or Solana (no Bitcoin finality), Stacks offers
 
 ## 📁 Repository Structure
 
-```
+```text
 warp-protocol/
 ├── packages/
-│   ├── middleware/       # Server-side W.A.R.P. Gateway
+│   ├── middleware/       # Server-side W.A.R.P. Gateway (@warp-protocol/middleware)
 │   │   ├── src/
-│   │   │   ├── gate.ts   # Core 402 middleware
-│   │   │   ├── verify.ts # Stacks tx verification
-│   │   │   └── index.ts
+│   │   │   ├── index.ts
 │   │   └── package.json
 │   │
-│   ├── client/           # Agent-side SDK
+│   ├── client/           # Agent-side SDK (@warp-protocol/client)
 │   │   ├── src/
-│   │   │   ├── agent.ts  # WarpAgent class
-│   │   │   ├── wallet.ts # Stacks wallet integration
-│   │   │   └── index.ts
+│   │   │   ├── index.ts
 │   │   └── package.json
 │   │
-│   └── dashboard/        # Revenue analytics UI (Next.js)
-│       ├── app/
+│   └── dashboard/        # Revenue analytics UI (Next.js/Vite)
+│       ├── src/
 │       ├── components/
 │       └── package.json
 │
-├── examples/
-│   ├── simple-api/       # Demo: Protected Express API
-│   ├── ai-scraper/       # Demo: Autonomous agent that pays
-│   └── dynamic-pricing/  # Demo: Surge pricing implementation
+├── examples/             # [Coming Soon]
 │
 ├── docs/
-│   ├── DESIGN_SYSTEM.md  # W.A.R.P. visual identity
-│   ├── PROTOCOL_SPEC.md  # Technical specification
-│   └── INTEGRATION.md    # Step-by-step guide
+│   ├── DESIGN_SYSTEM.md
+│   ├── PROTOCOL_SPEC.md
+│   └── INTEGRATION.md
 │
-├── DESIGN_SYSTEM.md      # Visual identity & branding
-├── README.md             # This file
-└── LICENSE               # MIT License
+├── DESIGN_SYSTEM.md
+├── README.md
+└── package.json          # Monorepo root
 ```
 
 ---
