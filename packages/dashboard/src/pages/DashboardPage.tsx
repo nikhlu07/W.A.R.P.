@@ -4,19 +4,41 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import WarpBadge from "@/components/shared/WarpBadge";
 import WarpCard from "@/components/shared/WarpCard";
-import { revenueData } from "@/data/mockData"; // Keep revenue data mock for now as it needs aggregation
+import WarpButton from "@/components/shared/WarpButton";
+import { revenueData } from "@/data/mockData";
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
-import { TrendingUp, Zap, Users, ExternalLink } from "lucide-react";
+import { TrendingUp, Zap, Users, ExternalLink, Play, Loader2 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { formatDistanceToNow } from "date-fns";
 
 const DashboardPage = () => {
   const [realTransactions, setRealTransactions] = useState<any[]>([]);
+  const [isSimulating, setIsSimulating] = useState(false);
   const [stats, setStats] = useState([
     { label: "TOTAL REVENUE", value: "0 STX", icon: TrendingUp, change: "+0%" },
     { label: "PAYMENTS TODAY", value: "0", icon: Zap, change: "+0" },
     { label: "UNIQUE AGENTS", value: "0", icon: Users, change: "+0" },
   ]);
+
+  const handleSimulate = async () => {
+    setIsSimulating(true);
+    try {
+      const response = await fetch('https://w-a-r-p-1.onrender.com/simulate-agent', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+      });
+      const data = await response.json();
+      if (!data.success) {
+        console.error("Simulation failed:", data.error);
+        alert("Simulation failed: " + data.error);
+      }
+    } catch (e) {
+      console.error("Error triggering simulation:", e);
+      alert("Error triggering simulation.");
+    } finally {
+      setIsSimulating(false);
+    }
+  };
 
   useEffect(() => {
     fetchTransactions();
@@ -76,9 +98,20 @@ const DashboardPage = () => {
       <Navbar />
       <div className="pt-14 px-6 py-8">
         <div className="max-w-7xl mx-auto">
-          <div className="flex items-center gap-4 mb-8">
-            <WarpBadge>DASHBOARD</WarpBadge>
-            <span className="font-mono text-xs text-muted-foreground">API Revenue Analytics — Live Data</span>
+          <div className="flex items-center justify-between mb-8">
+            <div className="flex items-center gap-4">
+              <WarpBadge>DASHBOARD</WarpBadge>
+              <span className="font-mono text-xs text-muted-foreground">API Revenue Analytics — Live Data</span>
+            </div>
+
+            <WarpButton
+              onClick={handleSimulate}
+              disabled={isSimulating}
+              className="flex items-center gap-2"
+            >
+              {isSimulating ? <Loader2 className="w-4 h-4 animate-spin" /> : <Play className="w-4 h-4 fill-current" />}
+              {isSimulating ? "SIMULATING..." : "SIMULATE TRAFFIC"}
+            </WarpButton>
           </div>
 
           {/* Stats */}

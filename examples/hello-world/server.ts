@@ -1,18 +1,24 @@
 import express from 'express';
-// Use relative path to source since we are using tsx and local packages are not built
+import cors from 'cors';
 import { warpGate } from '../../packages/middleware/src/index';
+import { WarpAgent } from '../../packages/client/src/index';
+import dotenv from 'dotenv';
+import path from 'path';
+
+// Force load .env from root if not present (although Render sets env vars)
+dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
-// Middleware to parse JSON bodies (optional but good practice)
+// Enable CORS for dashboard
+app.use(cors());
 app.use(express.json());
 
-// 🛡️ PROTECTED ROUTE: Costs 1000 micro-STX (0.001 STX) to access
-// This uses the warpGate wrapper around x402-stacks paymentMiddleware
+// 🛡️ PROTECTED ROUTE
 app.use('/secret-data', warpGate({
-    recipient: 'SP2J6ZY48GV1EZ5V2V5RB9MP66SW86PYKKNRV9EJ7', // Using a well-known address or your own
-    price: 1000, // 0.001 STX
+    recipient: 'SP2J6ZY48GV1EZ5V2V5RB9MP66SW86PYKKNRV9EJ7',
+    price: 1000,
     network: 'testnet'
 }));
 
@@ -23,7 +29,41 @@ app.get('/secret-data', (req, res) => {
     });
 });
 
+// 🤖 SIMULATION ENDPOINT (For Dashboard Demo)
+app.post('/simulate-agent', async (req, res) => {
+    try {
+        console.log("🤖 Simulation requested...");
+
+        const privateKey = process.env.WARP_TEST_KEY;
+        if (!privateKey) {
+            return res.status(500).json({ error: "Server missing WARP_TEST_KEY" });
+        }
+
+        const agent = new WarpAgent({
+            privateKey: privateKey,
+            network: 'testnet'
+        });
+
+        // Agent calls the protected route on THIS server
+        // Use localhost if running locally or get the public URL if needed
+        // Since we are inside the server, we can target localhost port
+        const targetUrl = `http://localhost:${port}/secret-data`;
+
+        console.log(`🤖 Agent fetching: ${targetUrl}`);
+        const data = await agent.fetch(targetUrl);
+
+        console.log("✅ Simulation success!");
+        res.json({ success: true, data });
+    } catch (error: any) {
+        console.error("❌ Simulation failed:", error);
+        res.status(500).json({
+            error: "Simulation failed",
+            details: error.message,
+            stack: error.stack
+        });
+    }
+});
+
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
-    console.log(`Try accessing http://localhost:${port}/secret-data directly to see 402 error.`);
 });
