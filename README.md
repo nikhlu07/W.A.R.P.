@@ -59,47 +59,53 @@ We are moving from the **Attention Economy** (Ads) to the **Execution Economy** 
 
 **The core issue:** The web's payment infrastructure was built for humans with wallets, not autonomous agents with private keys.
 
-## ⚠️ The Strategic Trap: "Empty Platform Problem"
+## 🧩 The Integration Gap
 
-If you only build the **W.A.R.P. Platform** (Dashboard/Explorer), you are reliant on other developers finding the raw `x402` standard, understanding it, and implementing it correctly.
+Building on a raw protocol is difficult. Developers shouldn't need to implement complex cryptographic handshakes or manage payment channels from scratch.
 
-**Reality:** Developers are lazy. They won't read the raw spec. They will look for `npm install x402`.
+**The Reality:** Most developers look for `npm install`, not a whitepaper.
 
-**The Fix:** Your SDK (`warp-protocol`) is the **"Trojan Horse."** Developers install it because it makes coding easier. In doing so, they automatically become compatible with your Platform.
-
----
-
-## 🌀 The "W.A.R.P. Flywheel"
-
-This is the winning business model where **Both** the Engine and the Dashboard work together:
-
-1. **The Hook (SDK):** Developer installs `warp-protocol` because it saves them **50 hours** of coding crypto headers.
-2. **The Data (Protocol):** The SDK processes payments and (optionally) reports stats to your backend.
-3. **The Value (Platform):** The Developer logs into **warp.money** (your platform) to see: *"You earned 500 STX today."*
+**The Solution:** The **W.A.R.P. SDK** (`@warp-protocol/client`) bridges this gap. It provides a drop-in "Trojan Horse" that handles the complexity of HTTP 402, making any application instantly compatible with the W.A.R.P. Platform.
 
 ---
 
-## 🏗️ The New Architecture: "The Hybrid Monorepo"
+## 🔄 The Ecosystem Cycle
 
-We structure this repository to hold **Both** the Engine (SDK) and the Dashboard (Platform) to ensure tight integration and rapid iteration.
+W.A.R.P. is designed as a self-reinforcing ecosystem where the Engine (SDK) and the Dashboard (Platform) work in tandem:
+
+1. **The Hook (SDK):** Developers install `@warp-protocol/client` to save **50+ hours** of implementation time.
+2. **The Protocol:** The SDK autonomously handles payments, negotiations, and settlements on-chain.
+3. **The Platform:** Developers and Agents connect to **warp.money** to visualize revenue, manage keys, and track performance.
+
+---
+
+## 🏗️ Unified Architecture
+
+This repository adopts a **Hybrid Monorepo** structure to ensure the Protocol and Platform evolve in perfect sync:
+
+- **`packages/client`**: The Agent-side SDK (The Engine).
+- **`packages/middleware`**: The Server-side Gateway.
+- **`packages/dashboard`**: The Analytics Platform (The Dashboard).
+
+This unity ensures that every feature added to the Protocol is immediately supported by the Dashboard.
 
 ---
 
 ## 🚀 The Solution: HTTP 402 + Stacks Blockchain
 
-W.A.R.P. weaponizes the forgotten HTTP status code `402 Payment Required` and transforms it into a **negotiation protocol** between APIs and AI Agents.
+W.A.R.P. is a production-ready implementation of the **x402 Protocol** on Stacks. It weaponizes the forgotten HTTP status code `402 Payment Required` to transform it into a **negotiation protocol** between APIs and AI Agents.
 
 ### **For API Sellers:**
 
-Drop in 3 lines of middleware. Start earning STX from Agent traffic immediately.
+Drop in 3 lines of middleware. Start earning **STX**, **sBTC**, or **USDCx** from Agent traffic immediately.
 
 ### **For Agent Buyers:**
 
-A standardized SDK that detects invoices, signs transactions, and retries requests—fully autonomous.
+A standardized SDK that detects **x402-compliant invoices**, signs transactions, and retries requests—fully autonomous.
 
 ### **For The Stacks Ecosystem:**
 
-Creates **immediate utility** for STX and sBTC as the native currency of AI labor.
+Creates **immediate utility** for Stacks-native assets as the fuel for the AI economy.
 
 ---
 
@@ -309,10 +315,10 @@ main();
 | **Component** | **Technology** | **Why** |
 |---------------|----------------|---------|
 | **Settlement Layer** | Stacks Blockchain | Fast (~6s blocks), Bitcoin-secured finality |
-| **Payment Token** | STX (Native), sBTC (Roadmap) | Native utility, Bitcoin interoperability |
+| **Payment Token** | STX, sBTC, USDCx | Native utility & Bitcoin interoperability |
 | **Backend** | Node.js, TypeScript | Universal compatibility, developer-friendly |
 | **Blockchain SDK** | `@stacks/transactions` | Official Stacks library |
-| **HTTP Standard** | HTTP 402 (RFC 7231) | 20-year-old spec, finally useful |
+| **Standard** | **x402 (Stacks Spec)** | The machine-to-machine payment standard |
 
 ---
 
