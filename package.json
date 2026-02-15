@@ -6,6 +6,7 @@
         "examples/*"
     ],
     "scripts": {
+        "start": "npm run example:server",
         "test": "echo \"Error: no test specified\" && exit 1",
         "example:server": "cd examples/hello-world && npm run start:server",
         "example:client": "cd examples/hello-world && npm run start:client"
