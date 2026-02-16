@@ -34,9 +34,16 @@ app.post('/simulate-agent', async (req, res) => {
     try {
         console.log("🤖 Simulation requested...");
 
+        // Debug logging
+        console.log("Environment check:");
+        console.log("PORT:", process.env.PORT);
+        console.log("WARP_TEST_KEY exists:", !!process.env.WARP_TEST_KEY);
+        console.log("WARP_TEST_KEY length:", process.env.WARP_TEST_KEY ? process.env.WARP_TEST_KEY.length : 0);
+
         const privateKey = process.env.WARP_TEST_KEY;
         if (!privateKey) {
-            return res.status(500).json({ error: "Server missing WARP_TEST_KEY" });
+            console.error("❌ WARP_TEST_KEY is missing from process.env");
+            return res.status(500).json({ error: "Server missing WARP_TEST_KEY. Check Render Env Vars." });
         }
 
         const agent = new WarpAgent({
