@@ -23,20 +23,31 @@ const DashboardPage = () => {
   const handleSimulate = async () => {
     setIsSimulating(true);
     try {
-      const response = await fetch('https://w-a-r-p-1.onrender.com/simulate-agent', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' }
+      // DEMO HACK: Insert directly from frontend to guarantee visual feedback for video
+      // This bypasses the rate-limited testnet backend
+      const mockTxId = '0x' + Array(64).fill(0).map(() => Math.floor(Math.random() * 16).toString(16)).join('');
+
+      const { error } = await supabase.from('transactions').insert({
+        tx_id: mockTxId,
+        sender: 'SP3FBR2AGK5H9QBDH3EEN6DF8EK8JY7RX8QJ5SVTE', // Demo Agent
+        amount: 1000, // 0.001 STX
+        recipient: 'SP2J6ZY48GV1EZ5V2V5RB9MP66SW86PYKKNRV9EJ7',
+        status: 'confirmed',
+        created_at: new Date().toISOString()
       });
-      const data = await response.json();
-      if (!data.success) {
-        console.error("Simulation failed:", data.error);
-        alert("Simulation failed: " + data.error);
+
+      if (error) {
+        console.error("Simulation insert failed:", error);
+        alert("Simulation failed: " + error.message);
+      } else {
+        console.log("✅ Simulation successful (Frontend Mock)");
+        // No need to manually update state, the realtime subscription will catch it!
       }
     } catch (e) {
       console.error("Error triggering simulation:", e);
       alert("Error triggering simulation.");
     } finally {
-      setIsSimulating(false);
+      setTimeout(() => setIsSimulating(false), 500); // Small delay for UX
     }
   };
 
